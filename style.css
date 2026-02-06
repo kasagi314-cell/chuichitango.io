@@ -1,0 +1,441 @@
+:root {
+    --primary-color: #6366f1;
+    --secondary-color: #a855f7;
+    --accent-color: #ec4899;
+    --text-color: #f8fafc;
+    --bg-color: #0f172a;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --font-en: 'Outfit', sans-serif;
+    --font-ja: 'Zen Kaku Gothic New', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-en);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    /* Allow scrolling if needed */
+    position: relative;
+}
+
+/* Background Animations */
+.background-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: float 10s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--primary-color);
+    top: -100px;
+    left: -100px;
+}
+
+.blob-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--secondary-color);
+    bottom: -50px;
+    right: -50px;
+    animation-delay: -5s;
+}
+
+.blob-3 {
+    width: 250px;
+    height: 250px;
+    background: var(--accent-color);
+    top: 40%;
+    left: 40%;
+    animation-duration: 15s;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(30px, 30px);
+    }
+}
+
+/* App Container */
+.app-container {
+    width: 100%;
+    max-width: 900px;
+    /* Increased for memory game from 600px */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    margin: 2rem 0;
+}
+
+header {
+    text-align: center;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #c084fc, #6366f1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Mode Switcher */
+.mode-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.mode-btn {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: var(--font-en);
+    transition: all 0.2s ease;
+}
+
+.mode-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-color: transparent;
+}
+
+.mode-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+#progress-text {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Utility Class */
+.hidden {
+    display: none !important;
+}
+
+/* Card Styles (Home) */
+.card-container {
+    width: 100%;
+    aspect-ratio: 3/4;
+    perspective: 1000px;
+    cursor: pointer;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    padding: 2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.card-front {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-back {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: rotateY(180deg);
+}
+
+.card h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    word-break: break-word;
+}
+
+.card-back h2 {
+    font-family: var(--font-ja);
+}
+
+.hint {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: auto;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.control-btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-family: var(--font-en);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn.primary {
+    background: white;
+    color: var(--bg-color);
+    flex: 1;
+}
+
+.control-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.control-btn.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 3rem;
+    padding: 0;
+}
+
+.control-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.control-btn.small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    background: rgba(236, 72, 153, 0.2);
+    color: white;
+    border: 1px solid rgba(236, 72, 153, 0.4);
+}
+
+.control-btn.small:hover {
+    background: rgba(236, 72, 153, 0.4);
+}
+
+/* Control SVG */
+.control-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Memory Game Styles */
+.memory-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.memory-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.memory-card {
+    width: 8rem;
+    height: 3rem;
+    position: relative;
+    cursor: pointer;
+    perspective: 1000px;
+}
+
+.memory-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.4s;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.memory-card.flipped .memory-card-inner {
+    transform: rotateY(180deg);
+}
+
+.memory-card.matched .memory-card-inner {
+    transform: rotateY(180deg);
+    opacity: 0.5;
+    /* Fade out matched cards slightly */
+}
+
+/* Memory Card Match Animation */
+@keyframes pulse-green {
+    0% {
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(74, 222, 128, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+    }
+}
+
+.memory-card.matched .memory-back {
+    border-color: #4ade80;
+    /* Green success */
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 197, 94, 0.2));
+    animation: pulse-green 1s;
+}
+
+.memory-front,
+.memory-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.25rem;
+    word-break: break-all;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.memory-front {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    /* Maybe a pattern or icon for the back of card? */
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 2rem;
+}
+
+.memory-back {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25));
+    transform: rotateY(180deg);
+    color: white;
+    font-weight: 600;
+}
+
+.memory-back.long-text {
+    font-size: 0.85rem;
+}
+
+.memory-back.very-long-text {
+    font-size: 0.7rem;
+}
+
+/* Responsive Grid */
+@media (max-width: 550px) {
+    .memory-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.35rem;
+    }
+
+    .memory-front,
+    .memory-back {
+        font-size: 0.7rem;
+    }
+
+    .app-container {
+        padding: 1rem;
+        height: auto;
+        min-height: 100vh;
+        justify-content: flex-start;
+    }
+}
